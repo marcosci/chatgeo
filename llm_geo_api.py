@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException, Depends
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 import os
 from kaldera_kernel import ask_gis_question, execute_python_code
@@ -10,7 +11,6 @@ app = FastAPI()
 class GeoTask(BaseModel):
     task: str
     geojson: dict = None
-    model: dict = None
 
 @app.post("/geospatial")
 async def analyze_geospatial_task(geo_task: GeoTask):
@@ -28,12 +28,7 @@ async def analyze_geospatial_task(geo_task: GeoTask):
             gis_result = execute_python_code(python_code, geo_task.geojson)
 
         # Return a success message and optionally, additional outputs
-        return {
-            "status": "success",
-            "prompt": message,
-            "python_code": python_code,
-            "gis_result": gis_result
-        }
+        return JSONResponse(content=gis_result.to_json(), media_type="application/geo+json")
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

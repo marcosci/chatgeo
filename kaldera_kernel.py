@@ -55,20 +55,20 @@ def execute_python_code(
     """
     # Prepare GeoJSON handling code if input is provided
     geojson_code = f"""
-            import geopandas as gpd
-            from shapely.geometry import shape
-            import json
+import geopandas as gpd
+from shapely.geometry import shape
+import json
 
-            # Parse GeoJSON input
-            geojson_data = {geojson_input}
+# Parse GeoJSON input
+geojson_data = {geojson_input}
 
-            # Create a list of geometries and properties from the GeoJSON features
-            geometries = [shape(feature["geometry"]) for feature in geojson_data["features"]]
-            properties = [feature["properties"] for feature in geojson_data["features"]]
+# Create a list of geometries and properties from the GeoJSON features
+geometries = [shape(feature["geometry"]) for feature in geojson_data["features"]]
+properties = [feature["properties"] for feature in geojson_data["features"]]
 
-            # Create a GeoDataFrame from the geometries and properties
-            gdf = gpd.GeoDataFrame(properties, geometry=geometries)
-            """
+# Create a GeoDataFrame from the geometries and properties
+gdf = gpd.GeoDataFrame(properties, geometry=geometries)
+"""
     # Combine GeoJSON handling with user-provided code
     full_code = f"{geojson_code}\n{code}"
 
@@ -77,8 +77,6 @@ def execute_python_code(
 
     # Execute the combined code
     exec(full_code, globals(), ldict)
-
-    # Retrieve the result from the local namespace
     result = ldict.get(final_variable_name, None)
 
     return result
