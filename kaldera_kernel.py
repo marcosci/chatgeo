@@ -1,24 +1,19 @@
 from openai import OpenAI
-import configparser
-import sys
-import io
 import geopandas as gpd
 from shapely.geometry import shape
-import json
 import textwrap
 
-# load config
-config = configparser.ConfigParser()
-config.read("config.ini")
-
-# use your KEY.
-openai_key = config.get("api_key", "openai_key")
-client = OpenAI(
-    api_key=openai_key,
-)
-
-
 def ask_gis_question(prompt):
+
+    # use your KEY.
+    openai_key = os.getenv('api_key')
+    client = OpenAI(
+        api_key=openai_key,
+    )
+
+    
+
+
     try:
         # Query the ChatGPT API
         response = client.chat.completions.create(
