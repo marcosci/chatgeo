@@ -25,13 +25,8 @@ RUN apt-get update && \
 ENV CPLUS_INCLUDE_PATH=/usr/include/gdal \
     C_INCLUDE_PATH=/usr/include/gdal
 
-# Set working directory inside the container
-WORKDIR /app
-
-# Copy application code and dependencies
-COPY llm_geo_api.py /app/llm_geo_api.py
-COPY LLM_Geo_kernel.py /app/LLM_Geo_kernel.py
-COPY requirements.txt /app/requirements.txt
+# Copy all files to the container
+COPY . .
 
 # Create necessary directories
 RUN mkdir -p ${SAVE_DIR} ${DATA_LOCATIONS}

@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  fastapi-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fastapi_gis_assistant
+    ports:
+      - "8000:8000" # Map the container's port 8000 to the host's port 8000
+    restart: always
+    volumes:
+      - ./app:/app
